@@ -1,15 +1,91 @@
-from core.omni_robot import OmniRobot, Direction
-import constants as const
 from pybricks.parameters import Color
 
-from domain.path_control import (
-    walls_of_vertices,
-    possible_obstacles_vertices,
-    possible_directions,
-    wall_colors,
-    get_side_directions,
-    get_relative_orientation,
-)
+import constants as const
+from core.robot import Direction, OmniRobot
+from domain.pathfinding import Graph
+
+walls_of_vertices = {
+    1: ["N", "L", "O"],
+    3: ["N", "L", "O"],
+    5: ["N", "L", "O"],
+    7: ["O"],
+    8: ["N", "S"],
+    9: [],
+    10: ["N", "S"],
+    11: ["L"],
+    14: ["L", "O"],
+    16: ["L", "O"],
+    18: ["L", "O"],
+    20: ["O"],
+    21: ["N", "S"],
+    22: [],
+    23: ["N", "S"],
+    24: ["L"],
+    27: ["L", "O", "S"],
+    29: ["L", "O", "S"],
+    31: ["L", "O", "S"],
+}
+
+possible_obstacles_vertices = [1, 3, 8, 10, 14, 16, 21, 23, 27, 29]
+possible_directions = ["N", "L", "S", "O"]  # sentido horário
+
+
+wall_colors = [Color.BLACK, Color.BLUE, Color.RED, Color.YELLOW, Color.BROWN]
+
+
+def get_side_directions(robot_orientation: str):
+    """Considerando a orientação atual do robô, retorna as direções laterais a ele.
+    A primeira posição será a direção à direita do robô, a segunda posição será a direção à esquerda do robô
+    Exemplos:
+        Se o robô aponta para o Norte, as laterais são Leste e Oeste.
+        Se o robô aponta para o Leste, as laterais são Sul e Norte.
+    """
+    orientation_idx = possible_directions.index(robot_orientation)
+    return [
+        possible_directions[(orientation_idx + 1) % 4],
+        possible_directions[(orientation_idx - 1) % 4],
+    ]
+
+
+def get_relative_orientation(orientation: str, offset: int):
+    """Retorna a orientação relativa à orientação passada, considerando um offset.
+    Exemplos:
+        get_relative_orientation("N", 1) == "L"
+        get_relative_orientation("N", -1) == "O"
+    """
+    return possible_directions[(possible_directions.index(orientation) + offset) % 4]
+
+
+def move_from_position_to_targets(
+    lilo: OmniRobot, map_graph: Graph, initial_position: int, targets: list
+):
+    """Integra pathfinding e pathfollowing para mover o robô de uma posição inicial para uma posição alvo, recalculando rotas quando necessário.
+    Retorna a posição final do robô.
+    """
+
+    completed = False
+    current_position_idx = -1
+    while not completed:
+        if current_position_idx == -1:
+            current_position = initial_position
+
+        path, _, directions = map_graph.find_best_path(current_position, targets)
+        lilo.ev3_print("Path:", path)
+        lilo.ev3_print("Directions:", directions)
+        completed, current_position_idx = pathfollowing_control(lilo, path, directions)
+        if not completed:
+            # Marca obstáculo e tenta denovo
+            map_graph.mark_obstacle("V{}".format(path[current_position_idx + 1]))
+            current_position = path[current_position_idx]
+            lilo.ev3_print(
+                "Obstacle detected at V{}".format(path[current_position_idx + 1])
+            )
+            lilo.ev3_print("Recalculating path...")
+            for _ in range(2):
+                lilo.ev3.speaker.beep(700)
+                lilo.ev3.speaker.beep(900)
+    lilo.ev3_print("Finished in path[{}]".format(current_position_idx))
+    return path[current_position_idx]
 
 
 def omni_turn_to_direction(robot: OmniRobot, target_direction):
@@ -42,7 +118,7 @@ def get_obstacle_sensor_msg_and_distance(robot: OmniRobot):
     return "ULTRA_BACK", const.OBSTACLE_DISTANCE
 
 
-def omni_path_control(robot: OmniRobot, path: list, directions: list):
+def pathfollowing_control(robot: OmniRobot, path: list, directions: list):
     """
     Rotina pro robô OMNIDIRECIONAL seguir o caminho traçado, seguindo o conjunto de direções determinado.
 

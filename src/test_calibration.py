@@ -14,27 +14,6 @@ from pybricks.tools import DataLog, wait  # type: ignore
 import constants as const
 
 if const.MAP_COLOR_CALIBRATION == "OFICIAL":
-    from decision_trees.oficial.junior_lego_ev3_color_2 import (
-        junior_lego_ev3_color_p2_decision_tree,
-    )
-    from decision_trees.oficial.sandy_lego_ev3_color_3 import (
-        sandy_lego_ev3_color_p3_decision_tree,
-    )
-    from decision_trees.oficial.sandy_lego_ev3_color_4 import (
-        sandy_lego_ev3_color_p4_decision_tree,
-    )
-elif const.MAP_COLOR_CALIBRATION == "HOME":
-    from decision_trees.home.junior_lego_ev3_color_2 import (
-        junior_lego_ev3_color_p2_decision_tree,
-    )
-    from decision_trees.home.sandy_lego_ev3_color_3 import (
-        sandy_lego_ev3_color_p3_decision_tree,
-    )
-    from decision_trees.home.sandy_lego_ev3_color_4 import (
-        sandy_lego_ev3_color_p4_decision_tree,
-    )
-
-if const.MAP_COLOR_CALIBRATION == "OFICIAL":
     from decision_trees.oficial.lilo_lego_ev3_color_1 import (
         lilo_lego_ev3_color_p1_decision_tree,
     )
@@ -95,11 +74,6 @@ brick_name_to_sensors_and_functions = {
     "stitch": [
         ("S3-ht-nxt", Ev3devSensor, Port.S3, stitch_ht_nxt_color_v2_p3_decision_tree)
     ],
-    "sandy": [
-        ("S3", ColorSensor, Port.S3, sandy_lego_ev3_color_p3_decision_tree),
-        ("S4", ColorSensor, Port.S4, sandy_lego_ev3_color_p4_decision_tree),
-    ],
-    "junior": ["S2", ColorSensor, Port.S2, ...],
 }
 
 
