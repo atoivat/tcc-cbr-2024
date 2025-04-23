@@ -331,8 +331,6 @@ def forward_avoiding_places(
 
 def omni_blue_routine(robot: OmniRobot):
 
-    robot.bluetooth.message("PRINT: BLUE ROUTINE")
-
     robot.ev3_print("Blue routine")
     robot.pid_walk(10, speed=40, direction=Direction.BACK)
     robot.pid_turn(-90)
@@ -345,8 +343,6 @@ def omni_blue_routine(robot: OmniRobot):
 
 
 def omni_red_routine(robot: OmniRobot):
-
-    robot.bluetooth.message("PRINT: RED ROUTINE")
 
     robot.ev3_print("Red routine")
     robot.pid_walk(
@@ -385,27 +381,29 @@ def omni_red_routine(robot: OmniRobot):
         )
     robot.bluetooth.message("STOP")
 
-    robot.pid_walk(3, speed=40, direction=Direction.BACK)
-    robot.align()
-    robot.pid_walk(const.DIST_COLOR_AFTER_ALIGN, speed=const.SPEED_COLOR_AFTER_ALIGN)
+    while True:
+        robot.pid_walk(3, speed=40, direction=Direction.BACK)
+        robot.align()
+        robot.pid_walk(
+            const.DIST_COLOR_AFTER_ALIGN, speed=const.SPEED_COLOR_AFTER_ALIGN
+        )
 
-    color = wall_colors_check(
-        robot.color_front_left.color(), robot.color_front_right.color()
-    )
-    robot.ev3_print("Color detected:", color)
-    if color == "BLUE":
-        robot.ev3_print("BLUE detected")
-        return omni_blue_routine(robot)
-    elif color == "BLACK":
-        robot.ev3_print("BLACK detected")
-        return omni_black_routine(robot, from_red_routine=True)
-    elif color == "RED":
-        robot.ev3_print("RED detected")
-        return omni_red_routine(robot)
+        color = wall_colors_check(
+            robot.color_front_left.color(), robot.color_front_right.color()
+        )
+        robot.ev3_print("Color detected:", color)
+        if color == "BLUE":
+            robot.ev3_print("BLUE detected")
+            return omni_blue_routine(robot)
+        elif color == "BLACK":
+            robot.ev3_print("BLACK detected")
+            return omni_black_routine(robot, from_red_routine=True)
+        elif color == "RED":
+            robot.ev3_print("RED detected")
+            return omni_red_routine(robot)
 
 
 def omni_white_routine(robot: OmniRobot):
-    robot.bluetooth.message("PRINT: WHITE ROUTINE")
 
     robot.ev3_print("White routine")
 
@@ -425,26 +423,28 @@ def omni_white_routine(robot: OmniRobot):
             break
     robot.bluetooth.message("STOP")
 
-    robot.pid_walk(3, speed=40, direction=Direction.BACK)
-    robot.align()
-    robot.pid_walk(const.DIST_COLOR_AFTER_ALIGN, speed=const.SPEED_COLOR_AFTER_ALIGN)
+    while True:
+        robot.pid_walk(3, speed=40, direction=Direction.BACK)
+        robot.align()
+        robot.pid_walk(
+            const.DIST_COLOR_AFTER_ALIGN, speed=const.SPEED_COLOR_AFTER_ALIGN
+        )
 
-    color_seen = wall_colors_check(
-        robot.color_front_left.color(), robot.color_front_right.color()
-    )
-    if color_seen == "RED":
-        robot.ev3_print("RED detected")
-        return omni_red_routine(robot)
-    if color_seen == "BLACK":
-        robot.ev3_print("BLACK detected")
-        return omni_black_routine(robot)
-    if color_seen == "BLUE":
-        robot.ev3_print("BLUE detected")
-        return omni_blue_routine(robot)
+        color_seen = wall_colors_check(
+            robot.color_front_left.color(), robot.color_front_right.color()
+        )
+        if color_seen == "RED":
+            robot.ev3_print("RED detected")
+            return omni_red_routine(robot)
+        if color_seen == "BLACK":
+            robot.ev3_print("BLACK detected")
+            return omni_black_routine(robot)
+        if color_seen == "BLUE":
+            robot.ev3_print("BLUE detected")
+            return omni_blue_routine(robot)
 
 
 def omni_black_routine(robot: OmniRobot, from_red_routine=False):
-    robot.bluetooth.message("PRINT: BLACK ROUTINE")
 
     robot.pid_walk(5, speed=40, direction=Direction.BACK)
     robot.ev3_print("Black routine")
@@ -487,8 +487,6 @@ def localization_routine(robot: OmniRobot):
 
     colors_checkpoints_list = []
 
-    robot.bluetooth.message("PRINT: Localization")
-    robot.bluetooth.message()
     robot.bluetooth.message("ULTRA_FRONT")
     robot.bluetooth.message()
     for n in range(4):

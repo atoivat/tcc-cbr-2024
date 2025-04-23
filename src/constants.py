@@ -13,12 +13,10 @@ Não devem estar nesse módulo:
         execução)
 """
 
-import math
 import json
-from core.utils import get_hostname
+import math
 
-from core.utils import PIDValues
-
+from core.utils import PIDValues, get_hostname
 
 LOG_TO_FILE = True
 
@@ -94,7 +92,7 @@ else:
 SANDY_ORIGIN_VERTEX = 31
 SANDY_BOARDING_VERTEX = [6]
 
-DIST_COLOR_AFTER_ALIGN = 0.7
+DIST_COLOR_AFTER_ALIGN = 0.5
 SPEED_COLOR_AFTER_ALIGN = 30
 
 OMNI_LINE_FOLLOWER_BLUE_TARGET = 30

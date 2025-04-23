@@ -205,6 +205,14 @@ def test_unboarding(robot: OmniRobot):
     passenger_unboarding(robot)
 
 
+def test_pid_align_lilo(robot: OmniRobot):
+    while True:
+        for direction in Direction.get_all():
+            if direction % 2 != 0:  # apenas as 4 direções principais
+                robot.align(direction=direction, pid=PIDValues(kp=1, ki=0, kd=0.5))
+                robot.wait_button()
+
+
 def main(hostname):
     if hostname == "lilo":
         lilo_main(
