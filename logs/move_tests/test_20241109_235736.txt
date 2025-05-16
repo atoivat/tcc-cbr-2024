@@ -1,0 +1,10 @@
+1 FWD: -150.83cm
+2 FWD: -150.20cm
+3 FWD: -150.03cm
+4 FWD: -149.75cm
+5 FWD: -149.30cm
+6 FWD: -148.33cm
+7 FWD: -147.14cm
+8 FWD: -146.40cm
+9 FWD: -145.84cm
+10 FWD: -144.81cm

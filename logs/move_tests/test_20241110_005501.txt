@@ -1,0 +1,22 @@
+Bat, V: 7456 mV
+Bat, C: 162 mA
+1 FWD: -150,54cm
+1 BCK: 0,06cm
+2 FWD: -150,15cm
+2 BCK: 0,51cm
+3 FWD: -149,92cm
+3 BCK: 0,91cm
+4 FWD: -149,98cm
+4 BCK: 1,02cm
+5 FWD: -149,18cm
+5 BCK: 1,70cm
+6 FWD: -148,73cm
+6 BCK: 1,82cm
+7 FWD: -148,61cm
+7 BCK: 2,38cm
+8 FWD: -147,88cm
+8 BCK: 3,06cm
+9 FWD: -147,42cm
+9 BCK: 3,74cm
+10 FWD: -146,35cm
+10 BCK: 4,31cm

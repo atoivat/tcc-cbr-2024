@@ -1,0 +1,5 @@
+Bat. V: 7466 mV
+Bat. C: 169 mA
+1 FWD: -151.05cm
+1 BCK: -0.62cm
+2 FWD: -151.00cm

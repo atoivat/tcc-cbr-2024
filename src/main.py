@@ -1,5 +1,7 @@
 #!/usr/bin/env pybricks-micropython
 
+import time
+
 from pybricks.ev3devices import ColorSensor
 from pybricks.iodevices import Ev3devSensor
 from pybricks.parameters import Button, Color, Port
@@ -211,6 +213,85 @@ def test_pid_align_lilo(robot: OmniRobot):
             if direction % 2 != 0:  # apenas as 4 direções principais
                 robot.align(direction=direction, pid=PIDValues(kp=1, ki=0, kd=0.5))
                 robot.wait_button()
+
+
+def gerar_timestamp():
+    t = time.localtime()
+    # Formata: ano, mês, dia, hora, minuto, segundo
+    timestamp = "{:04d}{:02d}{:02d}_{:02d}{:02d}{:02d}".format(
+        t[0], t[1], t[2], t[3], t[4], t[5]
+    )
+    return timestamp
+
+
+def test_movements_case_1(robot: OmniRobot):
+
+    file_string = "test_" + gerar_timestamp() + ".txt"
+
+    with open(file_string, "w+") as logfile:
+        testing_dir = Direction.FRONT
+        DISTANCE = 150
+
+        print("Bat. V:", robot.ev3.battery.voltage(), "mV", file=logfile)
+        print("Bat. C:", robot.ev3.battery.current(), "mA", file=logfile)
+
+        iteration = 0
+        while iteration < 10:
+            iteration += 1
+            # robot.wait_button()
+            robot.pid_walk(
+                DISTANCE, speed=const.LILO_FORWARD_SPEED, direction=testing_dir
+            )
+            robot.stop()
+
+            log = (
+                str(iteration)
+                + " FWD: "
+                + "{:.2f}".format(
+                    robot.motor_degrees_to_cm(robot.motor_front_right.angle())
+                )
+                + "cm"
+            )
+            robot.ev3_print(log)
+            print(log, file=logfile)
+
+            # robot.wait_button()
+            robot.pid_walk(
+                DISTANCE,
+                speed=const.LILO_FORWARD_SPEED,
+                direction=Direction.get_relative_direction(testing_dir, 4),
+            )
+            log_backwards = (
+                str(iteration)
+                + " BCK: "
+                + "{:.2f}".format(
+                    robot.motor_degrees_to_cm(robot.motor_front_right.angle())
+                )
+                + "cm"
+            )
+            robot.ev3_print(log_backwards)
+            print(log_backwards, file=logfile)
+            robot.stop()
+
+
+def test_movements_case_2(robot: OmniRobot):
+    testing_dir_sign = 1
+    while True:
+        robot.wait_button()
+        for _ in range(4):
+            robot.pid_turn(90 * testing_dir_sign)
+        robot.stop()
+
+
+def test_movements_case_3(robot: OmniRobot):
+    testing_dir_sign = 1
+    while True:
+        robot.wait_button()
+        for _ in range(4):
+            robot.pid_walk(
+                60, speed=const.LILO_FORWARD_SPEED, direction=const.LILO_FORWARD_SPEED
+            )
+            robot.pid_turn(90 * testing_dir_sign)
 
 
 def main(hostname):

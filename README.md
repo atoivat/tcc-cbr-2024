@@ -31,7 +31,7 @@ Para baixar as pastas direto na pasta root do EV3:
 
 # Comandos SSH
 
-Pra baixar todos os logs do EV3 e deletar eles do robô:
+Pra baixar todos os logs de leitura do EV3 e deletar eles do robô:
 
 ```
 scp robot@lilo:/home/robot/**/*.csv ./logs/ && ssh robot@lilo rm /home/robot/**/*.csv
@@ -41,4 +41,10 @@ Pra mudar o nome do robô:
 
 ```
 sudo hostnamectl set-hostname stitch
+```
+
+Pra baixar todos os logs de teste do EV3 e deletar eles do robô:
+
+```
+scp robot@lilo:/home/robot/**/*.txt ./logs/move_tests/ && ssh robot@lilo rm /home/robot/**/*.txt
 ```

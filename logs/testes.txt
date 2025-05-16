@@ -1,0 +1,226 @@
+Testes
+
+
+Movimentação:
+    Botar o robô pra fazer percursos fixos várias vezes (sem alinhamento) com retorno à posição inicial. Anotar o erro em centímetros (ou graus) a cada iteração (frontal e lateral)
+        Percurso 1: atravessar o mapa em linha reta e voltar
+        Percurso 2: 4 curvas sucessivas de 90 graus
+        Percurso 3: realizar uma trajetória em formato de quadrado para um lado
+        Percurso 4: realizar uma trajetória em formato de quadrado para o outro lado
+    Depois fazer os mesmos percursos com estratégias de alinhamento
+Localização:
+    Testar o máximo possível de casos (aleatórios) de localização
+    Coletar:
+        Tempo pra chegar na zona de embarque (tabela)
+        Tipos de falhas encontradas. Gráfico de barras:
+            Nro. de sucessos
+            Nro. de falhas tipo 1
+            Nro. de falhas tipo 2
+            Nro. de falhas tipo 3
+Testes end-to-end
+    Partidas e contabilização de pontos
+
+
+# Movimentação Percurso 1
+Teste 0 (fora do chão, pra frente)
+    FWD: -150.83cm
+    BCK: 0.17cm
+    FWD: -150.66cm
+    BCK: 0.28cm
+    FWD: -149.64cm
+    BCK: 1.13cm
+    FWD: -149.52cm
+    BCK: 1.36cm
+    FWD: -149.35cm
+    BCK: 1.53cm
+    FWD: -149.01cm
+    BCK: 2.10cm
+    FWD: -148.44cm
+    BCK: 2.61cm
+    FWD: -148.22cm
+    BCK: 2.78cm
+    FWD: -148.05cm
+    BCK: 2.84cm
+    FWD: -147.59cm
+    BCK: 4.76cm
+
+
+
+# Localização
+
+(partida-cbr-1)
+    Obstáculo: G
+    Posição inicial: F Sul
+    Sucessos (loc): 4
+
+    (Re)Inícios: 4
+    Entregas: escola
+    Falhas:
+        posicionamento (localização)
+        alinhamento lateral (seguidor de caminho: parque) x2
+
+(partida-cbr-lombadas)
+    Obstáculos: A, H
+    Posição inicial: I Leste
+    Sucessos (loc): 1
+
+    Lombadas: #TODO
+
+    (Re)inícios: 3
+    Entregas: 0
+
+    Falhas:
+        lombada (seguidor de caminho: parque)
+        lombada (localização) x2
+
+(teste-entrega-museu)
+    Posição inicial: C Oeste
+    Sucessos (loc): 1
+
+    (Re)inícios: 1
+
+    Entregas: museu
+    Falhas:
+        alinhamento lateral (seguidor de caminho: farmácia)
+
+(teste-entregas-falha-garra-intervencao)
+    Posição inicial: A Leste
+
+    Sucessos (loc): 1
+    (Re)inícios: 1
+
+    Entregas: escola, prefeitura, biblioteca, padaria
+    Falhas:
+        alinhamento lateral (seguidor de caminho: retorno após padaria)
+
+(teste-entregas-padariaefarmacia)
+    Posição inicial: J Leste
+
+    Sucessos (loc): 1
+    (Re)inícios: 1
+
+    Entregas: padaria
+    Falhas:
+        alinhamento lateral (seguidor de caminho, farmácia)
+
+(teste-localização)
+    Posição inicial: B Leste
+
+    Sucessos (loc): 1
+    (Re)inícios: 1
+
+(teste-multiplas-entregas-parque)
+    Obstáculo: B (dinâmico)
+    Posição inicial: D Norte
+
+    Sucessos (loc): 1
+    (Re)inícios: 1
+
+    Entregas: padaria, biblioteca, parque, escola, prefeitura, parque (obstáculo), museu
+
+    Falhas:
+        posicionamento (não houve reinício; entrega "falsa" na farmácia)
+
+(teste-varias-entregas)
+    Posição inicial: C Oeste
+
+    Sucessos (loc): 1
+    (Re)inícios: 1
+
+    Entregas: museu, biblioteca
+    Falhas:
+        alinhamento lateral (seguidor de caminho, farmácia)
+        falha na coleta da criança azul
+
+
+(ultimos testes 1)
+    Obstáculos: G
+    Posição inicial: D Norte
+
+    Sucessos (loc): 3
+    (Re)inícios: 3
+
+    Entregas: padaria, biblioteca
+    Falhas:
+        falha na coleta do adulto marrom x2
+        falha mecânica roda
+        falha na varredura de passageiros
+
+(ultimos testes 2)
+    Obstaculos: H
+    Posicao inicial: G Oeste
+    Lombadas: 14, 4, 3
+
+    Sucessos (loc): 2
+    (Re)inícios: 6
+
+    Entregas:
+    Falhas:
+        lombada (localização) x4
+        detecao de passageiro
+        falha mecânica (roda) x2
+        falha na coleta (criança marrom)
+
+(ultimos testes 3)
+    E Oeste
+    Obstaculos: I, G
+
+    Sucessos (loc): 1
+    (Re)inícios: 5
+
+    Entregas: parque, biblioteca
+
+    Falhas:
+        falha na coleta da criança marrom (não houve reinício)
+        falha de posicionamento
+        falha na localização (detecção de cores) x2
+        deteccao de passageiro
+        falha na coleta da criança marrom (não houve reinício)
+
+(ultimos testes 4)
+    E Norte
+    Obstaculos: A, F, G
+    Lombadas: 5
+
+    Sucessos (loc): 2
+    (Re)inícios: 3
+
+    Entregas: parque
+    Falhas:
+        falha na coleta do adulto vermelho (não houve reinício)
+        falha mecânica (roda) x2
+        não detectou obstáculo
+
+(ultimos testes 5)
+    A Oeste
+    Obstaculos: C, E, G
+    Lombadas: 5, 2
+    
+    Sucessos (loc): 1
+    (Re)inícios: 6
+
+    Entregas: museu 
+    Falhas:
+        Lombadas (localização) x4
+        Lombadas (seguidor de caminho)
+
+(ultimos testes 6)
+    B Oeste
+    Obstaculo: C
+    Lombada: 4
+
+    Sucessos (loc): 2
+    (Re)inícios: 4
+
+    Entregas: escola, padaria, biblioteca, parque, prefeitura
+    Falhas:
+        deteccao de cores (localização)
+        falha na coleta (não causou reinicio) x3
+        falha no desembarque
+        falha na varredura
+
+
+
+
+
+
